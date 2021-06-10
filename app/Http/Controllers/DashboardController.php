@@ -15,6 +15,10 @@ class DashboardController extends Controller
     public function index()
     {
         $matches = Match::select('*')->orderBy('match_at')->get();
+        $isNextMatch = false;
+        if (count($matches) === 0)  {
+            return  View::make('dashboard.homepage', ['isNextMatch' => $isNextMatch]);
+        }
         $match = $matches->last();
         $today = Carbon::now('Asia/Ho_Chi_Minh');
         $filtered = $matches->filter(function ($match) use ($today) {
@@ -22,7 +26,6 @@ class DashboardController extends Controller
             return $matchAt->gt($today);
         });
         $upcomingMatches = $filtered->all();
-        $isNextMatch = false;
         if (!empty($upcomingMatches)) {
             $match = array_values($upcomingMatches)[0];
             $isNextMatch  = true;

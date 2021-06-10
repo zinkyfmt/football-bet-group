@@ -47,6 +47,7 @@
           <div class="container-fluid">
             <div class="fade-in">
               <div class="row">
+                @if(isset($match))
                 <div class="col-sm-12 col-lg-6">
                   <div class="card min-height-400">
                     <div class="card-header">
@@ -107,6 +108,8 @@
 
                   </div>
                 </div>
+                @endif
+                @if(isset($bettings))
                 <div class="col-sm-12 col-lg-6">
                   <div class="card min-height-400">
                     <div class="card-header">
@@ -157,6 +160,7 @@
                   </div>
 
                 </div>
+                @endif
               </div>
               <!-- /.row-->
               <!-- /.card-->
