@@ -15,6 +15,7 @@ class AlterTeamsTable extends Migration
     {
         Schema::table('teams', function (Blueprint $table) {
             $table->string('url', 1000)->nullable()->after('points');
+            $table->integer('rank')->default(1)->after('points');
         });
     }
 
@@ -26,7 +27,7 @@ class AlterTeamsTable extends Migration
     public function down()
     {
         Schema::table('teams', function (Blueprint $table) {
-            $table->dropColumn('url');
+            $table->dropColumn(['url','rank']);
         });
     }
 }
