@@ -25,11 +25,11 @@
               </svg></a></li>
           <li><span class="user-name" >{{Auth::user()->name}}</span></li>
           <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <div class="c-avatar"><img class="c-avatar-img" src="{{ url('/assets/img/avatars/6.jpg') }}" alt="user@email.com"></div>
+              <div class="c-avatar"><img class="c-avatar-img" src="@if(Auth::user()->avatar) {{ url(Auth::user()->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="user@email.com"></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
               <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="/profile">
                 <svg class="c-icon mr-2">
                   <use xlink:href="{{ url('/icons/sprites/free.svg#cil-user') }}"></use>
                 </svg> Profile

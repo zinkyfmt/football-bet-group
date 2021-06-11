@@ -23,6 +23,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/', 'DashboardController');
     Route::get('/logout')->name('logout')->uses('Auth\LoginController@logout');
 
+    Route::get('/profile', 'ProfileController@showProfile')->name('profile.show');
+    Route::post('/profile', 'ProfileController@update')->name('profile.update');
+
     Route::get('/groups', 'GroupController@index')->name('groups');
     Route::get('/teams/add', 'TeamController@add')->name('team.add');
     Route::post('/teams/store', 'TeamController@store')->name('team.store');

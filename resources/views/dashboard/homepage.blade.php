@@ -190,7 +190,7 @@
                           <tr>
                             <td>{{$i + 1}}</td>
                             <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="{{$player->email}}"><span class="c-avatar-status bg-success"></span></div>
+                              <div class="c-avatar"><img class="c-avatar-img" src="@if($player->avatar) {{ url($player->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="{{$player->email}}"><span class="c-avatar-status bg-success"></span></div>
                             </td>
                             <td>
                               <div>{{$player->name}}</div>
