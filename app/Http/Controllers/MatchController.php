@@ -20,7 +20,7 @@ class MatchController extends Controller
 {
     public function index()
     {
-        $matches = Match::with(['homeTeam','awayTeam'])->orderBy('match_at')->limit(10)->get();
+        $matches = Match::with(['homeTeam','awayTeam'])->orderBy('match_at')->get();
         $groups = [];
         $today = Carbon::now('Asia/Ho_Chi_Minh');
         foreach ($matches as $match) {
