@@ -30,12 +30,16 @@
                       <div class="alert alert-warning" role="alert">{{ $errors->first('name') }}</div>
                     @endif
                     <div class="form-group">
-                      <label for="ccmonth">Month</label>
+                      <label for="ccmonth">Group</label>
                       <select class="form-control" id="group_id" name="group_id">
                         @foreach($groups as $group)
                           <option value="{{$group->id}}">{{$group->name}}</option>
                         @endforeach
                       </select>
+                    </div>
+                    <div class="form-group">
+                      <label>Avatar URL</label>
+                      <input type="text" placeholder="Flag" name="url" value="{{old('url')}}" class="form-control">
                     </div>
                     <button
                             type="submit"

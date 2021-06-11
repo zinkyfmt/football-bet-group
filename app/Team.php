@@ -13,7 +13,7 @@ class Team extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'group_id', 'played', 'win', 'draw', 'lost', 'for', 'against', 'goal_difference', 'points'
+        'name', 'group_id', 'url', 'rank', 'played', 'win', 'draw', 'lost', 'for', 'against', 'goal_difference', 'points'
     ];
 
     /**
