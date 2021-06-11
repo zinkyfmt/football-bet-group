@@ -10,7 +10,7 @@
           <div class="col-md-6">
               <div class="card">
                   <div class="card-header"><strong>Update Profile</strong></div>
-                  <form class="form-horizontal" action="/profile" method="post" enctype="multipart/form-data">
+                  <form class="form-horizontal" action="profile" method="post">s
                   @if(Session::has('message'))
                       <div class="row">
                           <div class="col-12">
