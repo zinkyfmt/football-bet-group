@@ -113,8 +113,57 @@ class MatchController extends Controller
             DB::table('results')->insert($params);
         }
         $match->update($updateAttributes);
+        if (strtoupper($match->stages) === StageHelper::GROUP_STAGE) {
+            $this->updateStandings($match);
+        }
 
         return response()->json(['success' => 1]);
+    }
+
+    protected function updateStandings($match)
+    {
+        $homeGoal = $match->home_team_goal_value;
+        $awayGoal = $match->away_team_goal_value;
+        $homeTeam = $match->homeTeam;
+        $awayTeam = $match->awayTeam;
+        $homeTeamAttributes =  [
+            'played' => intval($homeTeam->played) + 1,
+            'win' => intval($homeTeam->win),
+            'draw' => intval($homeTeam->draw),
+            'lost' => intval($homeTeam->lost),
+            'for' => intval($homeTeam->for) + intval($homeGoal),
+            'against' => intval($homeTeam->against) + intval($awayGoal),
+            'goal_difference' => intval($homeTeam->goal_difference),
+            'points' => intval($homeTeam->points)
+        ];
+        $awayTeamAttributes =  [
+            'played' => intval($awayTeam->played) + 1,
+            'win' => intval($awayTeam->win),
+            'draw' => intval($awayTeam->draw),
+            'lost' => intval($awayTeam->lost),
+            'for' => intval($awayTeam->for) + intval($awayGoal),
+            'against' => intval($awayTeam->against) + intval($homeGoal),
+            'goal_difference' => intval($awayTeam->goal_difference),
+            'points' => intval($awayTeam->points)
+        ];
+        $homeTeamAttributes['goal_difference'] = $homeTeamAttributes['for'] - $homeTeamAttributes['against'];
+        $awayTeamAttributes['goal_difference'] = $awayTeamAttributes['for'] - $awayTeamAttributes['against'];
+        if (intval($homeGoal) > intval($awayGoal)) {
+            $homeTeamAttributes['win'] = $homeTeamAttributes['win'] + 1;
+            $awayTeamAttributes['lost'] = $awayTeamAttributes['lost'] + 1;
+            $homeTeamAttributes['points'] = $homeTeamAttributes['points'] + 3;
+        }  elseif (intval($homeGoal) < intval($awayGoal)) {
+            $awayTeamAttributes['win'] = $awayTeamAttributes['win'] + 1;
+            $homeTeamAttributes['lost'] = $homeTeamAttributes['lost'] + 1;
+            $awayTeamAttributes['points'] = $awayTeamAttributes['points'] + 3;
+        } else {
+            $homeTeamAttributes['draw'] = $homeTeamAttributes['draw'] + 1;
+            $awayTeamAttributes['draw'] = $awayTeamAttributes['draw'] + 1;
+            $homeTeamAttributes['points'] = $homeTeamAttributes['points'] + 1;
+            $awayTeamAttributes['points'] = $awayTeamAttributes['points'] + 1;
+        }
+        $homeTeam->update($homeTeamAttributes);
+        $awayTeam->update($awayTeamAttributes);
     }
 }
 
