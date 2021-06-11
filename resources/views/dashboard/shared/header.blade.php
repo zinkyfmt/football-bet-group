@@ -23,8 +23,9 @@
               <svg class="c-icon">
                 <use xlink:href="{{ url('/icons/sprites/free.svg#cil-envelope-open') }}"></use>
               </svg></a></li>
+          <li><span class="user-name" >{{Auth::user()->name}}</span></li>
           <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-              <div class="c-avatar"><span class="user-name" >{{Auth::user()->name}}</span><img class="c-avatar-img" src="{{ url('/assets/img/avatars/6.jpg') }}" alt="user@email.com"></div>
+              <div class="c-avatar"><img class="c-avatar-img" src="{{ url('/assets/img/avatars/6.jpg') }}" alt="user@email.com"></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
               <div class="dropdown-header bg-light py-2"><strong>Account</strong></div>

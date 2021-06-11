@@ -1,4 +1,4 @@
-      <div class="c-sidebar-brand"><img class="c-sidebar-brand-full" src="/assets/brand/coreui-base-white.svg" width="118" height="46" alt="CoreUI Logo"><img class="c-sidebar-brand-minimized" src="assets/brand/coreui-signet-white.svg" width="118" height="46" alt="CoreUI Logo"></div>
+      <div class="c-sidebar-brand"><img class="c-sidebar-brand-full" src="/assets/img/logo1.png" width="118" height="46" alt="CoreUI Logo"><img class="c-sidebar-brand-minimized" src="/assets/img/logo1.png" width="118" height="46" alt="Euro Logo"></div>
       <ul class="c-sidebar-nav">
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{url('/')}}">
                   <i class="fa fa-home" aria-hidden="true"></i> Home Page</a>
