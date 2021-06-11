@@ -64,5 +64,29 @@ class MatchController extends Controller
         Session::flash('message', 'New Match has been added!');
         return redirect('matches/add');
     }
+    /**
+     * Store a new blog post.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateScore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'match_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => 0]);
+        }
+        $updateAttributes = [
+            'home_team_rate_value' => isset($request['rate_home']) ? $request['rate_home'] : null,
+            'away_team_rate_value' => isset($request['rate_away']) ? $request['rate_away'] : null,
+            'home_team_goal_value' => isset($request['goal_home']) ? $request['goal_home'] : null,
+            'away_team_goal_value' => isset($request['goal_away']) ? $request['goal_away'] : null,
+        ];
+        Match::find($request['match_id'])->update($updateAttributes);
+        return response()->json(['success' => 1]);
+    }
 }
 

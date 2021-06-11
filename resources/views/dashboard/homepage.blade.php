@@ -89,6 +89,7 @@
                           </div>
                         </div>
                       </div>
+                      @if(Auth::user()->role !== 1)
                       <div class="betting-contents">
                         <div class="betting-rate">
                           <span>Rate</span>
@@ -104,8 +105,8 @@
                           <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->away_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->away_team_id}}">{{$match->awayTeam->name}} Win</button>
                         </div>
                       </div>
+                      @endif
                     </div>
-
                   </div>
                 </div>
                 @endif

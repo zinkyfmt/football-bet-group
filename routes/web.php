@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/matches', 'MatchController@index')->name('matches');
     Route::get('/matches/add', 'MatchController@add')->name('match.add');
+    Route::post('/matches/update-score', 'MatchController@updateScore')->name('match.update_score');
     Route::post('/matches/store', 'MatchController@store')->name('match.store');
 
     Route::post('/bettings/ajaxSubmit', 'BettingController@ajaxSubmit')->name('betting.submit');

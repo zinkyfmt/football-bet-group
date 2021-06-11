@@ -1,5 +1,11 @@
 @extends('dashboard.base')
 @section('css')
+    <style>
+        .match-rate {
+            width: 50px;
+            display: initial;
+        }
+    </style>
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -8,7 +14,7 @@
                 <div class="col-sm-12">
                     <div class="card">
                         <div class="card-header"><h4>All Matches</h4></div>
-                        <div class="card-body">
+                        <div class="card-body" id="match_list">
                             <input type="hidden" id="user_id" value="{{Auth::user()->id}}">
                             @foreach($groups as $date => $matches)
                             <div class="row date-group">
@@ -54,12 +60,34 @@
                                                 </div>
                                             </div>
                                             <div class="betting-contents">
-                                                <div class="betting-rate">
+                                                <div class="betting-rate" data-match_id="{{$match->id}}">
                                                     <span>Rate</span>
                                                     <br>
-                                                    <h5>{{\App\Helpers\CommonHelper::float2rat($match->home_team_rate_value)}}-{{\App\Helpers\CommonHelper::float2rat($match->away_team_rate_value)}}</h5>
+                                                    @if(Auth::user()->role === 1)
+                                                        <input type="text" class="form-control match-rate-home-value match-rate" value="{{$match->home_team_rate_value}}">
+                                                        -
+                                                        <input type="text" class="form-control match-rate-away-value match-rate" value="{{$match->away_team_rate_value}}">
+                                                    @else
+                                                        <h5>
+                                                            <span>{{\App\Helpers\CommonHelper::float2rat($match->home_team_rate_value)}}</span>
+                                                            -
+                                                            <span>{{\App\Helpers\CommonHelper::float2rat($match->away_team_rate_value)}}</span>
+                                                        </h5>
+                                                    @endif
+                                                    <br>
+                                                    @if(Auth::user()->role === 1)
+                                                        <span>Score</span>
+                                                        <br>
+                                                        <input type="text" class="form-control match-goal-home-value match-rate" value="{{$match->home_team_goal_value}}">
+                                                        -
+                                                        <input type="text" class="form-control match-goal-away-value match-rate" value="{{$match->away_team_goal_value}}">
+                                                        <br>
+                                                        <br>
+                                                        <button class="btn btn-primary update-match-rate">Update</button>
+                                                    @endif
                                                 </div>
                                                 <br>
+                                                @if(Auth::user()->role !== 1)
                                                 <div class="your-bet-section" data-match_id="{{$match->id}}">
                                                     <span>Your Bet</span>
                                                     <br>
@@ -67,6 +95,7 @@
                                                     <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->is_draw) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="0">Draw</button>
                                                     <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->away_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->away_team_id}}">{{$match->awayTeam->name}} Win</button>
                                                 </div>
+                                                @endif
                                             </div>
                                         </div>
                                     @endforeach
@@ -82,5 +111,46 @@
 @endsection
 
 @section('javascript')
-
+    <script>
+        $(document).ready(function() {
+            console.log('dasda');
+           $('#match_list').on('click', '.update-match-rate',  function (e) {
+               console.log('update');
+               var $this = $(this);
+               var parent = $this.parent();
+               var matchId = parent.data('match_id');
+               console.log(matchId);
+               var matchGoalHome = parent.find('.match-goal-home-value').val();
+               var matchGoalAway = parent.find('.match-goal-away-value').val();
+               var matchRateHome = parent.find('.match-rate-home-value').val();
+               var matchRateAway = parent.find('.match-rate-away-value').val();
+               var formData = new FormData();
+               formData.append('match_id', matchId);
+               var _token = $('meta[name="csrf-token"]').attr('content');
+               formData.append('_token', _token);
+               if  (matchGoalHome.trim() !== '') {
+                   formData.append('goal_home', matchGoalHome);
+               }
+               if  (matchGoalAway.trim() !== '') {
+                   formData.append('goal_away', matchGoalAway);
+               }
+               if  (matchRateHome.trim() !== '') {
+                   formData.append('rate_home', matchRateHome);
+               }
+               if  (matchRateAway.trim() !== '') {
+                   formData.append('rate_away', matchRateAway);
+               }
+               $.ajax({
+                   url: "/matches/update-score",
+                   method: 'POST',
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   dataType: 'json',
+               }).done(function( data ) {
+                   console.log(data.success);
+               });
+           })
+        });
+    </script>
 @endsection

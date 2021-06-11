@@ -13,7 +13,7 @@ class Match extends Model
      * @var array
      */
     protected $fillable = [
-        'home_team_id', 'away_team_id', 'stages', 'order', 'stadium', 'match_at', 'home_team_rate_value', 'away_team_rate_value'
+        'home_team_id', 'away_team_id', 'stages', 'order', 'stadium', 'match_at', 'home_team_rate_value', 'away_team_rate_value', 'home_team_goal_value', 'away_team_goal_value'
     ];
 
     /**
