@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Betting;
+use App\Helpers\CostRateHelper;
 use App\Helpers\ResultStatusHelper;
+use App\Helpers\StageHelper;
 use App\Result;
 use Exception;
 use Illuminate\Console\Command;
@@ -55,7 +57,10 @@ class ExecuteMatchResult extends Command
             $totalAwayGoal = floatval($match->away_team_rate_value) + floatval($match->away_team_goal_value);
             $status = $this->getStatusByBetting($betting, $totalHomeGoal, $totalAwayGoal);
             $tempResult['status'] = $status;
-            $tempResult['cost'] = $status === ResultStatusHelper::LOSE ? self::COST_UNIT*self::COST_RATE : 0;
+            $rate = StageHelper::getRate(strtoupper($match->stages));
+            $unitPrice = CostRateHelper::UNIT_PRICE;
+            $tempResult['cost'] = $status === ResultStatusHelper::LOSE ? $unitPrice*$rate : 0;
+            $tempResult['match_id'] = $match->id;
             $tempResult['betting_id'] = $betting->id;
             $tempResult['user_id'] = $betting->user_id;
             $result[] = $tempResult;

@@ -13,9 +13,7 @@ class ResultStatusHelper
     private static $stageAttributes = [
         'win' =>  'Win',
         'draw' => 'Draw',
-        'lose' => 'Lose',
-        'SEMI4' => 'Semi-final',
-        'FINAL2' => 'Final',
+        'lose' => 'Lose'
     ];
 
     public static function getName($key)

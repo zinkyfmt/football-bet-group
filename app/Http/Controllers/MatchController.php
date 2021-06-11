@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Betting;
 use App\Group;
+use App\Helpers\CostRateHelper;
+use App\Helpers\ResultStatusHelper;
 use App\Helpers\StageHelper;
 use App\Match;
+use App\Result;
 use App\Team;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,7 +89,31 @@ class MatchController extends Controller
             'home_team_goal_value' => isset($request['goal_home']) ? $request['goal_home'] : null,
             'away_team_goal_value' => isset($request['goal_away']) ? $request['goal_away'] : null,
         ];
-        Match::find($request['match_id'])->update($updateAttributes);
+        $match = Match::find($request['match_id']);
+        if (!$match) {
+            return response()->json(['success' => 0]);
+        }
+        if (is_null($match->home_team_goal_value) && is_null($match->away_team_goal_value) && isset($request['goal_home'])) {
+            $usersNoBetQuery = User::select('*')->where('role','>', 1);
+            $usersBet = User::select('users.id')->join('bettings','users.id','bettings.user_id')->where('match_id','=',$match->id)->get()->pluck('id');
+            if (count($usersBet) > 0) {
+                $usersNoBetQuery->whereNotIn('id', $usersBet->toArray());
+            }
+            $usersNoBet = $usersNoBetQuery->get();
+            $params = [];
+            foreach ($usersNoBet as $user) {
+                $arrayTmp['user_id'] = $user->id;
+                $arrayTmp['match_id'] = $match->id;
+                $rate = StageHelper::getRate(strtoupper($match->stages));
+                $unitPrice = CostRateHelper::UNIT_PRICE;
+                $arrayTmp['cost'] = $unitPrice*$rate;
+                $arrayTmp['status'] = ResultStatusHelper::LOSE;
+                $params[] = $arrayTmp;
+            }
+            DB::table('results')->insert($params);
+        }
+        $match->update($updateAttributes);
+
         return response()->json(['success' => 1]);
     }
 }
