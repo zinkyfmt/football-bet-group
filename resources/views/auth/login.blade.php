@@ -83,13 +83,43 @@
                         {{ Form::close() }}
                     </div>
                 </div>
-                <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+                <div class="card text-white bg-primary d-md-down-none" style="width:44%">
                     <div class="card-body text-center">
-                        <div>
-                            <h2>Sign up</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            <button class="btn btn-lg btn-outline-light mt-3" type="button">Register Now!</button>
+                        <div class="card-body p-4">
+                            {{ Form::open(array('url' => 'register')) }}
+                            <h1>Register</h1>
+                            <p class="text-muted">Create your account</p>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend"><span class="input-group-text">
+<svg class="c-icon">
+<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-user"></use>
+</svg></span></div>
+                                {{ Form::text('name', Input::old('name'), array('placeholder' => 'Name', 'class' => 'form-control')) }}
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend"><span class="input-group-text">
+<svg class="c-icon">
+<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-envelope-open"></use>
+</svg></span></div>
+                                {{ Form::text('email', Input::old('email'), array('placeholder' => 'Email', 'class' => 'form-control')) }}
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend"><span class="input-group-text">
+<svg class="c-icon">
+<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+</svg></span></div>
+                                {{ Form::password('password', array('placeholder' => 'Password', 'class' => 'form-control')) }}
+                            </div>
+                            <div class="input-group mb-4">
+                                <div class="input-group-prepend"><span class="input-group-text">
+<svg class="c-icon">
+<use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+</svg></span></div>
+                                {{ Form::password('password_confirmation', array('placeholder' => 'Repeat password', 'class' => 'form-control')) }}
+                            </div>
+                            {{ Form::submit('Create Account!', array('class' => 'btn btn-block btn-success')) }}
                         </div>
+                        {{ Form::close() }}
                     </div>
                 </div>
             </div>

@@ -17,6 +17,7 @@ Route::get('/', function () {
 });
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login')->name('login.attempt')->uses('Auth\LoginController@doLogin');
+Route::post('register')->name('register')->uses('Auth\RegisterController@register');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/', 'DashboardController');

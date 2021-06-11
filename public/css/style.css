@@ -22435,3 +22435,11 @@ i.fa {
 .draw-mode {
   display: none;
 }
+.c-header-nav-link {
+  width: 90px;
+}
+.c-header-nav-link .user-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0px 15px;
+}

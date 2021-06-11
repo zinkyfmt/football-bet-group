@@ -92,14 +92,12 @@
                       @if(Auth::user()->role !== 1)
                       <div class="betting-contents">
                         <div class="betting-rate">
-                          <span>Rate</span>
+                          <span>Handicap</span>
                           <br>
                           <h5>{{\App\Helpers\CommonHelper::float2rat($match->home_team_rate_value)}}-{{\App\Helpers\CommonHelper::float2rat($match->away_team_rate_value)}}</h5>
                         </div>
                         <br>
                         <div class="your-bet-section" data-match_id="{{$match->id}}">
-                          <span>Your Bet</span>
-                          <br>
                           <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->home_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->home_team_id}}">{{$match->homeTeam->name}} Win</button>
                           <button class="bet-btn btn btn-pill draw-mode btn-light @if($match->betting && $match->betting->is_draw) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="0">Draw</button>
                           <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->away_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->away_team_id}}">{{$match->awayTeam->name}} Win</button>
@@ -188,150 +186,32 @@
                           </tr>
                         </thead>
                         <tbody>
+                          @foreach($players as $i => $player)
                           <tr>
-                            <td>#1</td>
+                            <td>{{$i + 1}}</td>
                             <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
+                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="{{$player->email}}"><span class="c-avatar-status bg-success"></span></div>
                             </td>
                             <td>
-                              <div>Tinh Pham</div>
-                              <div class="small text-muted"><span>New</span> | Registered: Jan 1, 2015</div>
+                              <div>{{$player->name}}</div>
+                              <div class="small text-muted"><span>New</span> | Registered: {{$player->created_at}}</div>
                             </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>5</td>
-                            <td>15</td>
+                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>0</td>
+                            <td>0</td>
                             <td>
                               <div class="clearfix">
-                                <div class="float-left"><strong>50%</strong></div>
-                                <div class="float-right"><small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small></div>
+                                <div class="float-left"><strong>0%</strong></div>
                               </div>
                               <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                               </div>
                             </td>
                             <td>
-                              <div class="small text-muted">100000 VND</div>
+                              <div class="small text-muted">0</div>
                             </td>
                           </tr>
-                          <tr>
-                            <td>#1</td>
-                            <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
-                            </td>
-                            <td>
-                              <div>Tinh Pham</div>
-                              <div class="small text-muted"><span>New</span> | Registered: Jan 1, 2015</div>
-                            </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>5</td>
-                            <td>15</td>
-                            <td>
-                              <div class="clearfix">
-                                <div class="float-left"><strong>50%</strong></div>
-                                <div class="float-right"><small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small></div>
-                              </div>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                            </td>
-                            <td>
-                              <div class="small text-muted">100000 VND</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>#1</td>
-                            <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
-                            </td>
-                            <td>
-                              <div>Tinh Pham</div>
-                              <div class="small text-muted"><span>New</span> | Registered: Jan 1, 2015</div>
-                            </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>5</td>
-                            <td>15</td>
-                            <td>
-                              <div class="clearfix">
-                                <div class="float-left"><strong>50%</strong></div>
-                                <div class="float-right"><small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small></div>
-                              </div>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                            </td>
-                            <td>
-                              <div class="small text-muted">100000 VND</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>#1</td>
-                            <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
-                            </td>
-                            <td>
-                              <div>Tinh Pham</div>
-                              <div class="small text-muted"><span>New</span> | Registered: Jan 1, 2015</div>
-                            </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>5</td>
-                            <td>15</td>
-                            <td>
-                              <div class="clearfix">
-                                <div class="float-left"><strong>50%</strong></div>
-                                <div class="float-right"><small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small></div>
-                              </div>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                            </td>
-                            <td>
-                              <div class="small text-muted">100000 VND</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>#1</td>
-                            <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
-                            </td>
-                            <td>
-                              <div>Tinh Pham</div>
-                              <div class="small text-muted"><span>New</span> | Registered: Jan 1, 2015</div>
-                            </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>5</td>
-                            <td>15</td>
-                            <td>
-                              <div class="clearfix">
-                                <div class="float-left"><strong>50%</strong></div>
-                                <div class="float-right"><small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small></div>
-                              </div>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                            </td>
-                            <td>
-                              <div class="small text-muted">100000 VND</div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>#1</td>
-                            <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="assets/img/avatars/1.jpg" alt="user@email.com"><span class="c-avatar-status bg-success"></span></div>
-                            </td>
-                            <td>
-                              <div>Tinh Pham</div>
-                              <div class="small text-muted"><span>New</span> | Registered: Jan 1, 2015</div>
-                            </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>5</td>
-                            <td>15</td>
-                            <td>
-                              <div class="clearfix">
-                                <div class="float-left"><strong>50%</strong></div>
-                                <div class="float-right"><small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small></div>
-                              </div>
-                              <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                              </div>
-                            </td>
-                            <td>
-                              <div class="small text-muted">100000 VND</div>
-                            </td>
-                          </tr>
+                          @endforeach
+
                         </tbody>
                       </table>
                     </div>

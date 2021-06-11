@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Betting;
 use App\Match;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +36,8 @@ class DashboardController extends Controller
         $betting = Betting::where('match_id',$match->id)->where('user_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();
         $match->betting =  $betting;
         $match->expire_bet = !$isNextMatch;
-        return  View::make('dashboard.homepage',  ['match' => $match, 'isNextMatch' => $isNextMatch,  'bettings' => $bettings]);
+        $players = User::where('role', '>', 1)->get();
+        return  View::make('dashboard.homepage',  ['match' => $match, 'isNextMatch' => $isNextMatch,  'bettings' => $bettings,'players' => $players]);
     }
 }
 

@@ -61,7 +61,7 @@
                                             </div>
                                             <div class="betting-contents">
                                                 <div class="betting-rate" data-match_id="{{$match->id}}">
-                                                    <span>Rate</span>
+                                                    <span>Handicap</span>
                                                     <br>
                                                     @if(Auth::user()->role === 1)
                                                         <input type="text" class="form-control match-rate-home-value match-rate" value="{{$match->home_team_rate_value}}">
@@ -89,8 +89,6 @@
                                                 <br>
                                                 @if(Auth::user()->role !== 1)
                                                 <div class="your-bet-section" data-match_id="{{$match->id}}">
-                                                    <span>Your Bet</span>
-                                                    <br>
                                                     <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->home_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->home_team_id}}">{{$match->homeTeam->name}} Win</button>
                                                     <button class="bet-btn btn btn-pill btn-light draw-mode @if($match->betting && $match->betting->is_draw) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="0">Draw</button>
                                                     <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->away_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->away_team_id}}">{{$match->awayTeam->name}} Win</button>
