@@ -83,7 +83,7 @@
                         {{ Form::close() }}
                     </div>
                 </div>
-                <div class="card text-white bg-primary d-md-down-none" style="width:44%">
+                <div class="card text-white bg-primary">
                     <div class="card-body text-center">
                         <div class="card-body p-4">
                             {{ Form::open(array('url' => 'register')) }}
