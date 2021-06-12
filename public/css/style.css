@@ -22443,3 +22443,123 @@ i.fa {
   font-weight: 600;
   margin: 0px 15px;
 }
+.content-flex .is-team {
+  width: 40%
+}
+
+.team-home {
+  justify-content: flex-end;
+}
+.content-flex .center-text {
+  width: 20%;
+  justify-content: center;
+  max-width: 150px;
+}
+.team-away {
+  justify-content: flex-start;
+}
+.content-flex span {
+  font-size: 20px;
+}
+@media (min-width: 576px) {
+  .pc-none {
+    display: none !important;
+  }
+}
+.rank-player-name {
+  width: 300px;
+}
+@media (max-width: 575.98px) {
+  a.c-header-brand {
+    width: 100%;
+  }
+  a.c-header-brand img {
+    min-height: 40px !important
+  }
+  .c-subheader {
+    display: none;
+  }
+  .c-header-nav {
+    display: none;
+  }
+  .c-header-toggler {
+    position: absolute;
+    top: 15px;
+  }
+  h4, .h4 {
+    font-size: 1rem;
+  }
+  h5, .h5 {
+    font-size: 0.8rem;
+  }
+  h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-bottom: 0.2rem;
+  }
+  .content-flex span {
+    font-size: 15px;
+  }
+  .content-flex .match--score_time {
+    font-size: 15px;
+
+  }
+  .content-flex .team-image img {
+    width: 35px;
+  }
+  .min-height-400 {
+    min-height: auto;
+  }
+  .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+    text-align: right !important;
+  }
+  .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {
+    display: none !important;
+  }
+  .btn-pill {
+    border-radius: 9px;
+  }
+  .sp-none {
+    display: none !important;
+  }
+  .table .thead-light th {
+    font-weight: 500;
+  }
+  .c-avatar-img {
+    width: 25px;
+  }
+  .rank-player-name {
+    width: 200px;
+  }
+  table#history  {
+    width: 100% !important;
+    border: none !important;
+  }
+  .sp-none-pad {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  table.dataTable thead th, table.dataTable thead td, .table .thead-light th {
+    padding: 5px !important;
+  }
+  table.dataTable tbody th, table.dataTable tbody td {
+    font-size: 12px;
+  }
+  .dataTables_wrapper .dataTables_filter input {
+    padding: 0px;
+    margin-right: 5px;
+  }
+  table.dataTable.no-footer {
+    border-bottom: none;
+  }
+  .col-sm-12  {
+    padding: 0;
+  }
+  .date-group {
+    margin: 10px 0px;
+  }
+  .center-text {
+    padding: 0 !important;
+  }
+  .content-flex .center-text {
+    width: 10%;
+  }
+}

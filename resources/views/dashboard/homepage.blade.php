@@ -48,7 +48,7 @@
             <div class="fade-in">
               <div class="row">
                 @if(isset($match))
-                <div class="col-sm-12 col-lg-6">
+                <div class="col-sm-12 col-lg-5">
                   <div class="card min-height-400">
                     <div class="card-header">
                       <div class="btn-group float-right">
@@ -68,7 +68,7 @@
                         <div class="team-home is-team ">
                           <div class="team-name">
                             <div>
-                              <span class="js-fitty fitty-fit" style="white-space: nowrap; display: inline-block; font-size: 20px;">{{$match->homeTeam->name}}</span>
+                              <span class="js-fitty fitty-fit">{{$match->homeTeam->name}}</span>
                             </div>
                           </div>
                           <div class="team-image">
@@ -78,13 +78,13 @@
                         <div class="center-text match--score">
                           <span class="js-tolocaltime match--score_time" data-tag="HH:mm">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $match->match_at)->format('H:i')}}</span>
                         </div>
-                        <div class="team-home is-team ">
+                        <div class="team-away is-team ">
                           <div class="team-image">
                             <img src="{{$match->awayTeam->url}}" width="50">
                           </div>
                           <div class="team-name">
                             <div>
-                              <span class="js-fitty fitty-fit" style="white-space: nowrap; display: inline-block; font-size: 20px;">{{$match->awayTeam->name}}</span>
+                              <span class="js-fitty fitty-fit">{{$match->awayTeam->name}}</span>
                             </div>
                           </div>
                         </div>
@@ -94,7 +94,7 @@
                         <div class="betting-rate">
                           <span>Handicap</span>
                           <br>
-                          <h5>{{\App\Helpers\CommonHelper::float2rat($match->home_team_rate_value)}}-{{\App\Helpers\CommonHelper::float2rat($match->away_team_rate_value)}}</h5>
+                          <h5>{{\App\Helpers\CommonHelper::float2rat($match->home_team_rate_value)}} - {{\App\Helpers\CommonHelper::float2rat($match->away_team_rate_value)}}</h5>
                         </div>
                         <br>
                         <div class="your-bet-section" data-match_id="{{$match->id}}">
@@ -109,22 +109,22 @@
                 </div>
                 @endif
                 @if(isset($matchesHistory))
-                <div class="col-sm-12 col-lg-6">
+                <div class="col-sm-12 col-lg-7">
                   <div class="card min-height-400">
                     <div class="card-header">
                       <div class="btn-group float-right">
                         <a href="/matches" class="view-match-all">View Summary <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                       </div>
                       History</div>
-                    <div class="card-body">
+                    <div class="card-body sp-none-pad">
                       <table class="table table-responsive-sm table-hover table-outline mb-0" id="history">
                         <thead class="thead-light">
                         <tr>
                           <th class="text-center"></th>
-                          <th class="text-center">Rate</th>
+                          <th class="text-center sp-none">Rate</th>
                           <th class="text-center">Bet</th>
                           <th class="text-center">Result</th>
-                          <th class="text-center">Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
+                          <th class="text-center"><span class="pc-none">{{\App\Helpers\CostRateHelper::CURRENCY}}</span><span class="sp-none">Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</span></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -132,7 +132,7 @@
                         <tr>
                           <td class="row-inline-flex text-center">
                             <div class="team-home" itemprop="homeTeam" itemscope="" itemtype="https://schema.org/SportsTeam">
-                              <span itemprop="name">{{$match->homeTeam->name}}</span>
+                              <span itemprop="name" class="sp-none">{{$match->homeTeam->name}}</span>
                               <span class="crest">
                                 <img alt="{{$match->homeTeam->name}}" itemprop="logo" src="{{$match->homeTeam->url}}" width="25">
                               </span>
@@ -142,17 +142,17 @@
                               <span class="crest">
                                 <img alt="{{$match->awayTeam->name}}" itemprop="logo" src="{{$match->awayTeam->url}}" width="25">
                               </span>
-                              <span itemprop="name">{{$match->awayTeam->name}}</span>
+                              <span itemprop="name" class="sp-none">{{$match->awayTeam->name}}</span>
                             </div>
                           </td>
-                          <td class="text-center">
-                            <div class="small text-muted"><span>{{$match->home_team_rate_value}} - {{$match->away_team_rate_value}}</span></div>
+                          <td class="text-center sp-none">
+                            <div class="text-muted"><span>{{$match->home_team_rate_value}} - {{$match->away_team_rate_value}}</span></div>
                           </td>
                           <td class="text-center" style="padding-left: 0; padding-right: 0;" ><button class="btn btn-outline-info active @if($match->is_draw) draw--status @endif">@if($match->is_draw) Draw @elseif($match->home_team_id === $match->win_team_id) {{$match->homeTeam->name}} @else {{$match->awayTeam->name}} @endif</button></td>
                           <td class="text-center">
                             <button class="btn btn-outline-info active result-status @if(isset($match->status)) {{$match->status}} @endif">@if(isset($match->status)) {{\App\Helpers\ResultStatusHelper::getName($match->status)}} @else Upcomming @endif </button>
                           </td>
-                          <td class="text-center">{{number_format($match->cost, 0, '.', ',')}}</td>
+                          <td class="text-center"><strong>{{number_format($match->cost, 0, '.', ',')}}</strong></td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -166,41 +166,41 @@
               <!-- /.row-->
               <!-- /.card-->
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-sm-12">
                   <div class="card">
                     <div class="card-header">Ranking</div>
-                    <div class="card-body">
+                    <div class="card-body sp-none-pad">
                       <!-- /.row--><br>
                       <table class="table table-responsive-sm table-hover table-outline mb-0">
                         <thead class="thead-light">
                           <tr>
-                            <th>Rank</th>
+                            <th class="sp-none">Rank</th>
                             <th class="text-center">
                               <svg class="c-icon">
                                 <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
                               </svg>
                             </th>
-                            <th>Name</th>
-                            <th class="text-center">Wins/Draws</th>
-                            <th class="text-center">Loses</th>
-                            <th>Win Rate %</th>
-                            <th>Total Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
+                            <th class="rank-player-name">Name</th>
+                            <th class="text-center"><span class="pc-none">W/D</span><span class="sp-none">Wins/Draws</span></th>
+                            <th class="text-center"><span class="pc-none">L</span><span class="sp-none">Loses</span></th>
+                            <th class="sp-none">Win Rate %</th>
+                            <th><span class="pc-none">{{\App\Helpers\CostRateHelper::CURRENCY}}</span><span class="sp-none">Total Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</span></th>
                           </tr>
                         </thead>
                         <tbody>
                           @foreach($players as $i => $player)
                           <tr>
-                            <td>{{$i + 1}}</td>
+                            <td class="sp-none">{{$i + 1}}</td>
                             <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="@if($player->user->avatar) {{ url($player->user->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="{{$player->user->email}}"><span class="c-avatar-status bg-success"></span></div>
+                              <div class="c-avatar"><img class="c-avatar-img" src="@if($player->user->avatar) {{ url($player->user->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="{{$player->user->email}}"></div>
                             </td>
                             <td>
                               <div>{{$player->user->name}}</div>
-                              <div class="small text-muted"><span>New</span> | Registered: {{$player->user->created_at}}</div>
+                              <div class="small text-muted sp-none"><span>New</span> | Registered: {{$player->user->created_at}}</div>
                             </td>
                             <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" title="us"></i>{{$player->win_draw}}</td>
                             <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" title="us"></i>{{$player->lose}}</td>
-                            <td>
+                            <td class="sp-none">
                               <div class="clearfix">
                                 <div class="float-left"><strong>{{number_format($player->win_draw/$player->total*100,2)}}%</strong></div>
                               </div>
@@ -238,6 +238,10 @@
       $('#history').DataTable({
         pageLength: 5,
         bSort: false,
+        columnDefs: [
+          { "width": "150px", "targets": 0 },
+          { "width": "50px", "targets": 4 },
+      ],
       });
     });
   </script>

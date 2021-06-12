@@ -22,7 +22,7 @@
                                     <h4 class="matches-match_date">
                                         <span class="js-tolocaltime" data-tag="dddd D MMMM YYYY">{{$date}}</span>
                                     </h4>
-                                    @foreach($matches  as $match)
+                                    @foreach($matches as $match)
                                         <div class="date-group-row">
                                             <div class="pre-match-info">
                                                 @if($match->homeTeam->group_id === $match->awayTeam->group_id)
@@ -34,7 +34,7 @@
                                                 <div class="team-home is-team ">
                                                     <div class="team-name">
                                                         <div>
-                                                            <span class="js-fitty fitty-fit" style="white-space: nowrap; display: inline-block; font-size: 20px;">{{$match->homeTeam->name}}</span>
+                                                            <span class="js-fitty fitty-fit">{{$match->homeTeam->name}}</span>
                                                         </div>
                                                     </div>
                                                     <div class="team-image">
@@ -48,13 +48,13 @@
                                                         <span class="js-tolocaltime">{{$match->home_team_goal_value}} - {{$match->away_team_goal_value}}</span>
                                                     @endif
                                                 </div>
-                                                <div class="team-home is-team ">
+                                                <div class="team-away is-team ">
                                                     <div class="team-image">
                                                         <img src="{{$match->awayTeam->url}}" width="50">
                                                     </div>
                                                     <div class="team-name">
                                                         <div>
-                                                            <span class="js-fitty fitty-fit" style="white-space: nowrap; display: inline-block; font-size: 20px;">{{$match->awayTeam->name}}</span>
+                                                            <span class="js-fitty fitty-fit">{{$match->awayTeam->name}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -62,7 +62,6 @@
                                             <div class="betting-contents">
                                                 <div class="betting-rate" data-match_id="{{$match->id}}">
                                                     <span>Handicap</span>
-                                                    <br>
                                                     @if(Auth::user()->role === 1)
                                                         <input type="text" class="form-control match-rate-home-value match-rate" value="{{$match->home_team_rate_value}}">
                                                         -
@@ -86,7 +85,6 @@
                                                         <button class="btn btn-primary update-match-rate">Update</button>
                                                     @endif
                                                 </div>
-                                                <br>
                                                 @if(Auth::user()->role !== 1)
                                                 <div class="your-bet-section" data-match_id="{{$match->id}}">
                                                     <button class="bet-btn btn btn-pill btn-light @if($match->betting && $match->betting->win_team_id === $match->home_team_id) active @endif" @if($match->expire_bet) disabled @endif data-bet_id="{{$match->home_team_id}}">{{$match->homeTeam->name}} Win</button>
