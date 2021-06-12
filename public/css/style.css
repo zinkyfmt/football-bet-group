@@ -22534,8 +22534,7 @@ i.fa {
     border: none !important;
   }
   .sp-none-pad {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
   }
   table.dataTable thead th, table.dataTable thead td, .table .thead-light th, .table th, .table td {
     padding: 5px 12px !important;
