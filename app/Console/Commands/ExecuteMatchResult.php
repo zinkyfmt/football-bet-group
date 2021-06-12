@@ -48,9 +48,9 @@ class ExecuteMatchResult extends Command
     {
         $matches = Match::select('*')->doesnthave('result')->whereNotNull('home_team_goal_value')->orderBy('order','asc')->get();
         echo count($matches) . ' need to be updated!';
+        Log::info(count($matches) . ' match(s) need to be updated!');
         $users = User::with('summary')->where('role','>',1)->get();
         $result = [];
-        $summary = [];
         $userSummary = [];
         foreach ($matches as $match) {
             $arrayTemp['match_id'] = $match->id;
