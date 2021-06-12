@@ -148,7 +148,13 @@
                           <td class="text-center sp-none">
                             <div class="text-muted"><span>{{$match->home_team_rate_value}} - {{$match->away_team_rate_value}}</span></div>
                           </td>
-                          <td class="text-center" style="padding-left: 0; padding-right: 0;" ><button class="btn btn-outline-info active @if($match->is_draw) draw--status @endif">@if($match->is_draw) Draw @elseif($match->home_team_id === $match->win_team_id) {{$match->homeTeam->name}} @else {{$match->awayTeam->name}} @endif</button></td>
+                          <td class="text-center" style="padding-left: 0; padding-right: 0;" >
+                            @if($match->betting)
+                            <button class="btn btn-outline-info active @if($match->is_draw) draw--status @endif">@if($match->is_draw) Draw @elseif($match->home_team_id === $match->betting->win_team_id) {{$match->homeTeam->name}} @else {{$match->awayTeam->name}} @endif</button>
+                            @else
+                              -
+                            @endif
+                          </td>
                           <td class="text-center">
                             <button class="btn btn-outline-info active result-status @if(isset($match->status)) {{$match->status}} @endif">@if(isset($match->status)) {{\App\Helpers\ResultStatusHelper::getName($match->status)}} @else Upcomming @endif </button>
                           </td>

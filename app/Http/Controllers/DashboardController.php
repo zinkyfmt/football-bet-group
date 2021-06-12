@@ -34,7 +34,13 @@ class DashboardController extends Controller
             $isNextMatch  = true;
         }
 
-        $matchesHistory = Match::select('*')->join('results','matches.id','results.match_id')->join('bettings','results.betting_id','bettings.id')->where('results.user_id', Auth::user()->id)->orderBy('matches.updated_at','desc')->get();
+        $matchesHistory = Match::select('*')->join('results','matches.id','results.match_id')->where('results.user_id', Auth::user()->id)->orderBy('matches.updated_at','desc')->get();
+        foreach ($matchesHistory as &$history) {
+            if ($history->betting_id) {
+                $bettingMatch = Betting::where('match_id',$history->match_id)->where('user_id',Auth::user()->id)->first();
+                $history->betting = $bettingMatch;
+            }
+        }
         $betting = Betting::where('match_id',$match->id)->where('user_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();
         $match->betting =  $betting;
         $match->expire_bet = !$isNextMatch;

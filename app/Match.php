@@ -39,4 +39,5 @@ class Match extends Model
     {
         return $this->hasOne(Result::class, 'match_id', 'id');
     }
+
 }
