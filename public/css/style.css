@@ -22546,6 +22546,7 @@ i.fa {
   .dataTables_wrapper .dataTables_filter input {
     padding: 0px;
     margin-right: 5px;
+    width: 120px;
   }
   table.dataTable.no-footer {
     border-bottom: none;
