@@ -124,7 +124,7 @@
                           <th class="text-center sp-none">Rate</th>
                           <th class="text-center">Bet</th>
                           <th class="text-center">Result</th>
-                          <th class="text-center"><span class="pc-none">{{\App\Helpers\CostRateHelper::CURRENCY}}</span><span class="sp-none">Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</span></th>
+                          <th class="text-right"><span class="pc-none">{{\App\Helpers\CostRateHelper::CURRENCY}}</span><span class="sp-none">Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</span></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -152,7 +152,7 @@
                           <td class="text-center">
                             <button class="btn btn-outline-info active result-status @if(isset($match->status)) {{$match->status}} @endif">@if(isset($match->status)) {{\App\Helpers\ResultStatusHelper::getName($match->status)}} @else Upcomming @endif </button>
                           </td>
-                          <td class="text-center"><strong>{{number_format($match->cost, 0, '.', ',')}}</strong></td>
+                          <td class="text-right"><strong>{{number_format($match->cost, 0, '.', ',')}}</strong></td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -174,7 +174,7 @@
                       <table class="table table-responsive-sm table-hover table-outline mb-0">
                         <thead class="thead-light">
                           <tr>
-                            <th class="sp-none">Rank</th>
+                            <th class=""><span class="pc-none">#</span><span class="sp-none">Rank</span></th>
                             <th class="text-center">
                               <svg class="c-icon">
                                 <use xlink:href="assets/icons/coreui/free-symbol-defs.svg#cui-people"></use>
@@ -184,13 +184,13 @@
                             <th class="text-center"><span class="pc-none">W/D</span><span class="sp-none">Wins/Draws</span></th>
                             <th class="text-center"><span class="pc-none">L</span><span class="sp-none">Loses</span></th>
                             <th class="sp-none">Win Rate %</th>
-                            <th><span class="pc-none">{{\App\Helpers\CostRateHelper::CURRENCY}}</span><span class="sp-none">Total Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</span></th>
+                            <th class="text-right"><span class="pc-none">{{\App\Helpers\CostRateHelper::CURRENCY}}</span><span class="sp-none">Total Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</span></th>
                           </tr>
                         </thead>
                         <tbody>
                           @foreach($players as $i => $player)
                           <tr>
-                            <td class="sp-none">{{$i + 1}}</td>
+                            <td class="" style="width: 30px">{{$i + 1}}</td>
                             <td class="text-center">
                               <div class="c-avatar"><img class="c-avatar-img" src="@if($player->user->avatar) {{ url($player->user->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="{{$player->user->email}}"></div>
                             </td>
@@ -208,8 +208,8 @@
                                 <div class="progress-bar bg-success" role="progressbar" style="width: {{number_format($player->win_draw/$player->total*100,2)}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                               </div>
                             </td>
-                            <td>
-                              <div class="text-muted"><strong>{{number_format($player->debit, 0, '.', ',')}}</strong></div>
+                            <td class="text-right" style="width: 80px;">
+                                <strong>{{number_format($player->debit, 0, '.', ',')}}</strong>
                             </td>
                           </tr>
                           @endforeach
@@ -239,7 +239,7 @@
         pageLength: 5,
         bSort: false,
         columnDefs: [
-          { "width": "150px", "targets": 0 },
+          { "width": "200px", "targets": 0 },
           { "width": "50px", "targets": 4 },
       ],
       });

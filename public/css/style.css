@@ -15159,7 +15159,7 @@ html:not([dir="rtl"]) .list-inline {
   -ms-flex-positive: 1;
       flex-grow: 1;
   min-width: 0;
-  padding-top: 2rem;
+  padding-top: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -22537,8 +22537,8 @@ i.fa {
     padding-left: 0;
     padding-right: 0;
   }
-  table.dataTable thead th, table.dataTable thead td, .table .thead-light th {
-    padding: 5px !important;
+  table.dataTable thead th, table.dataTable thead td, .table .thead-light th, .table th, .table td {
+    padding: 5px 12px !important;
   }
   table.dataTable tbody th, table.dataTable tbody td {
     font-size: 12px;
