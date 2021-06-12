@@ -184,7 +184,7 @@
                             <th class="text-center">Wins/Draws</th>
                             <th class="text-center">Loses</th>
                             <th>Win Rate %</th>
-                            <th>Total</th>
+                            <th>Total Debt ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -209,7 +209,7 @@
                               </div>
                             </td>
                             <td>
-                              <div class="small text-muted">0</div>
+                              <div class="small text-muted">{{number_format($player->sum, 0, '.', ',')}}</div>
                             </td>
                           </tr>
                           @endforeach
