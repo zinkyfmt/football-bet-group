@@ -108,7 +108,7 @@
                   </div>
                 </div>
                 @endif
-                @if(isset($bettings))
+                @if(isset($matchesHistory))
                 <div class="col-sm-12 col-lg-6">
                   <div class="card min-height-400">
                     <div class="card-header">
@@ -124,33 +124,35 @@
                           <th class="text-center">Rate</th>
                           <th class="text-center">Bet</th>
                           <th class="text-center">Result</th>
+                          <th class="text-center">Debt ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($bettings as $betting)
+                        @foreach($matchesHistory as $match)
                         <tr>
                           <td class="row-inline-flex text-center">
                             <div class="team-home" itemprop="homeTeam" itemscope="" itemtype="https://schema.org/SportsTeam">
-                              <span itemprop="name">{{$betting->match->homeTeam->name}}</span>
+                              <span itemprop="name">{{$match->homeTeam->name}}</span>
                               <span class="crest">
-                                <img alt="{{$betting->match->homeTeam->name}}" itemprop="logo" src="{{$betting->match->homeTeam->url}}" width="25">
+                                <img alt="{{$match->homeTeam->name}}" itemprop="logo" src="{{$match->homeTeam->url}}" width="25">
                               </span>
                             </div>
-                            <div class="line"> {{$betting->match->home_team_goal_value}} - {{$betting->match->away_team_goal_value}}</div>
+                            <div class="line"> {{$match->home_team_goal_value}} - {{$match->away_team_goal_value}}</div>
                             <div class="team-home" itemprop="homeTeam" itemscope="" itemtype="https://schema.org/SportsTeam">
                               <span class="crest">
-                                <img alt="{{$betting->match->awayTeam->name}}" itemprop="logo" src="{{$betting->match->awayTeam->url}}" width="25">
+                                <img alt="{{$match->awayTeam->name}}" itemprop="logo" src="{{$match->awayTeam->url}}" width="25">
                               </span>
-                              <span itemprop="name">{{$betting->match->awayTeam->name}}</span>
+                              <span itemprop="name">{{$match->awayTeam->name}}</span>
                             </div>
                           </td>
                           <td class="text-center">
-                            <div class="small text-muted"><span>{{$betting->match->home_team_rate_value}} - {{$betting->match->away_team_rate_value}}</span></div>
+                            <div class="small text-muted"><span>{{$match->home_team_rate_value}} - {{$match->away_team_rate_value}}</span></div>
                           </td>
-                          <td class="text-center" style="padding-left: 0; padding-right: 0;" ><button class="btn btn-outline-info active @if($betting->is_draw) draw--status @endif">@if($betting->is_draw) Draw @elseif($betting->match->homeTeam->id === $betting->win_team_id) {{$betting->match->homeTeam->name}} @else {{$betting->match->awayTeam->name}} @endif</button></td>
+                          <td class="text-center" style="padding-left: 0; padding-right: 0;" ><button class="btn btn-outline-info active @if($match->is_draw) draw--status @endif">@if($match->is_draw) Draw @elseif($match->home_team_id === $match->win_team_id) {{$match->homeTeam->name}} @else {{$match->awayTeam->name}} @endif</button></td>
                           <td class="text-center">
-                            <button class="btn btn-outline-info active result-status @if(isset($betting->result)) {{$betting->result->status}} @endif">@if(isset($betting->result)) {{\App\Helpers\ResultStatusHelper::getName($betting->result->status)}} @else Upcomming @endif </button>
+                            <button class="btn btn-outline-info active result-status @if(isset($match->status)) {{$match->status}} @endif">@if(isset($match->status)) {{\App\Helpers\ResultStatusHelper::getName($match->status)}} @else Upcomming @endif </button>
                           </td>
+                          <td class="text-center">{{number_format($match->cost, 0, '.', ',')}}</td>
                         </tr>
                         @endforeach
                         </tbody>

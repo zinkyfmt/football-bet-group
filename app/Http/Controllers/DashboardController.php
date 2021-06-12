@@ -32,12 +32,14 @@ class DashboardController extends Controller
             $isNextMatch  = true;
         }
 
-        $bettings = Betting::select(DB::raw('*, bettings.id as id'))->join('matches','bettings.match_id','matches.id')->where('bettings.user_id',Auth::user()->id)->whereNotNull('matches.home_team_goal_value')->orderBy('bettings.created_at', 'desc')->get();
+        $matchesHistory = Match::select('*')->join('results','matches.id','results.match_id')->join('bettings','results.betting_id','bettings.id')->where('results.user_id', Auth::user()->id)->orderBy('matches.updated_at','desc')->get();
+        //$bettings = Betting::select(DB::raw('*, bettings.id as id'))->join('matches','bettings.match_id','matches.id')->where('bettings.user_id',Auth::user()->id)->whereNotNull('matches.home_team_goal_value')->orderBy('bettings.created_at', 'desc')->get();
+
         $betting = Betting::where('match_id',$match->id)->where('user_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();
         $match->betting =  $betting;
         $match->expire_bet = !$isNextMatch;
         $players = User::where('role', '>', 1)->get();
-        return  View::make('dashboard.homepage',  ['match' => $match, 'isNextMatch' => $isNextMatch,  'bettings' => $bettings,'players' => $players]);
+        return  View::make('dashboard.homepage',  ['match' => $match, 'isNextMatch' => $isNextMatch,  'matchesHistory' => $matchesHistory,'players' => $players]);
     }
 }
 

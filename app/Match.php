@@ -31,4 +31,12 @@ class Match extends Model
     {
         return $this->belongsTo(Team::class, 'away_team_id', 'id');
     }
+
+    /**
+     * Get the phone associated with the user.
+     */
+    public function result()
+    {
+        return $this->hasOne(Result::class, 'match_id', 'id');
+    }
 }

@@ -13,7 +13,7 @@ class Result extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'betting_id', 'status', 'cost'
+        'user_id','match_id', 'betting_id', 'status', 'cost'
     ];
 
     /**
@@ -29,7 +29,7 @@ class Result extends Model
      */
     public function betting()
     {
-        return $this->belongsTo(Betting::class);
+        return $this->hasOne(Betting::class);
     }
 
 }
