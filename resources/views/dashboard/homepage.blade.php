@@ -214,7 +214,7 @@
                                 <div class="progress-bar bg-success" role="progressbar" style="width: {{number_format($player->win_draw/$player->total*100,2)}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                               </div>
                             </td>
-                            <td class="text-right" style="width: 80px;">
+                            <td class="text-right money-column">
                                 <strong>{{number_format($player->debit, 0, '.', ',')}}</strong>
                             </td>
                           </tr>

@@ -22565,6 +22565,9 @@ i.fa {
   .content-flex .team-name {
     padding: 0 5px;
   }
+  .money-column {
+    width: 80px;
+  }
 }
 .match--score_goal  {
   color: red;
