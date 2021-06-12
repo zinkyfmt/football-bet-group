@@ -17,7 +17,7 @@ class Group extends Model
     /**
      * Get the phone associated with the user.
      */
-    public function team()
+    public function teams()
     {
         return $this->hasMany(Team::class);
     }

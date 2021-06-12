@@ -73,7 +73,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($group->team as $team)
+                  @foreach ($group->teams as $team)
                     <tr data-team-id="{{$team->id}}">
                     <td class="table_team-name">
                       <div class="c-avatar"><img class="c-avatar-img" src="{{$team->url}}" alt="user@email.com"></div>

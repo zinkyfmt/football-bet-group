@@ -10,7 +10,9 @@ class GroupController extends Controller
 {
     public function index()
     {
-        $groups = Group::has('team')->get();
+        $groups = Group::with(['teams' => function ($query) {
+            $query->orderBy('points','desc')->orderBy('goal_difference','desc');
+        }])->get();
         return  View::make('dashboard.groups', ['groups' => $groups]);
     }
 }
