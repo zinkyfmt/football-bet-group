@@ -113,7 +113,7 @@
                   <div class="card min-height-400">
                     <div class="card-header">
                       <div class="btn-group float-right">
-                        <a href="/matches" class="view-match-all">View all matches <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="/matches" class="view-match-all">View Summary <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                       </div>
                       History</div>
                     <div class="card-body">
@@ -124,7 +124,7 @@
                           <th class="text-center">Rate</th>
                           <th class="text-center">Bet</th>
                           <th class="text-center">Result</th>
-                          <th class="text-center">Debt ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
+                          <th class="text-center">Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
                         </tr>
                         </thead>
                         <tbody>
