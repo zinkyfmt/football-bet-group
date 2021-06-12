@@ -40,7 +40,7 @@ class DashboardController extends Controller
         $match->betting =  $betting;
         $match->expire_bet = !$isNextMatch;
         $players = Result::groupBy('user_id')->selectRaw('users.name, users.email,users.avatar, users.created_at, results.user_id, sum(results.cost) as sum')->join('users','results.user_id','users.id')->orderBy('sum','desc')->get();
-        $playersStatus = Result::groupBy('user_id')->selectRaw(DB::raw('count(status) as total'))->join('users','results.user_id','users.id')->orderBy('sum','desc')->get();
+        //$playersStatus = Result::groupBy('user_id')->selectRaw(DB::raw('count(status) as total'))->join('users','results.user_id','users.id')->orderBy('sum','desc')->get();
         //$players = User::where('role', '>', 1)->get();
 
         return  View::make('dashboard.homepage',  ['match' => $match, 'isNextMatch' => $isNextMatch,  'matchesHistory' => $matchesHistory,'players' => $players]);
