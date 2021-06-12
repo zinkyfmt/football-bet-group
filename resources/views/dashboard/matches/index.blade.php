@@ -45,7 +45,7 @@
                                                     @if ($match->home_team_goal_value === null || $match->away_team_goal_value === null)
                                                         <span class="js-tolocaltime match--score_time" data-tag="HH:mm">{{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $match->match_at)->format('H:i')}}</span>
                                                     @else
-                                                        <span class="js-tolocaltime">{{$match->home_team_goal_value}} - {{$match->away_team_goal_value}}</span>
+                                                        <span class="js-tolocaltime match--score_goal">{{$match->home_team_goal_value}} - {{$match->away_team_goal_value}}</span>
                                                     @endif
                                                 </div>
                                                 <div class="team-away is-team ">

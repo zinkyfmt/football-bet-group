@@ -22566,3 +22566,6 @@ i.fa {
     padding: 0 5px;
   }
 }
+.match--score_goal  {
+  color: red;
+}
