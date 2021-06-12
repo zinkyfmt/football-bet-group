@@ -22562,4 +22562,7 @@ i.fa {
   .content-flex .center-text {
     width: 15%;
   }
+  .content-flex .team-name {
+    padding: 0 5px;
+  }
 }
