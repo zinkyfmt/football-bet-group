@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\ExecuteMatchResult;
+use App\Console\Commands\ExecutePlayersSummary;
 use App\Console\Commands\SendEmails;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,7 +16,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        ExecuteMatchResult::class
+        ExecuteMatchResult::class,
+        ExecutePlayersSummary::class
         //
     ];
 

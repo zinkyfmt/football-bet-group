@@ -9,12 +9,15 @@ use App\Helpers\ResultStatusHelper;
 use App\Helpers\StageHelper;
 use App\Match;
 use App\Result;
+use App\SummaryPlayers;
 use App\Team;
 use App\User;
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -68,11 +71,13 @@ class MatchController extends Controller
         Session::flash('message', 'New Match has been added!');
         return redirect('matches/add');
     }
+
     /**
      * Store a new blog post.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws Exception
      */
     public function updateScore(Request $request)
     {
@@ -83,41 +88,64 @@ class MatchController extends Controller
         if ($validator->fails()) {
             return response()->json(['success' => 0]);
         }
-        $updateAttributes = [
-            'home_team_rate_value' => isset($request['rate_home']) ? $request['rate_home'] : null,
-            'away_team_rate_value' => isset($request['rate_away']) ? $request['rate_away'] : null,
-            'home_team_goal_value' => isset($request['goal_home']) ? $request['goal_home'] : null,
-            'away_team_goal_value' => isset($request['goal_away']) ? $request['goal_away'] : null,
-        ];
         $match = Match::find($request['match_id']);
         if (!$match) {
             return response()->json(['success' => 0]);
         }
-        if (is_null($match->home_team_goal_value) && is_null($match->away_team_goal_value) && isset($request['goal_home'])) {
-            $usersNoBetQuery = User::select('*')->where('role','>', 1);
-            $usersBet = User::select('users.id')->join('bettings','users.id','bettings.user_id')->where('match_id','=',$match->id)->get()->pluck('id');
-            if (count($usersBet) > 0) {
-                $usersNoBetQuery->whereNotIn('id', $usersBet->toArray());
+        DB::beginTransaction();
+        try {
+            $updateAttributes = [
+                'home_team_rate_value' => isset($request['rate_home']) ? $request['rate_home'] : null,
+                'away_team_rate_value' => isset($request['rate_away']) ? $request['rate_away'] : null,
+                'home_team_goal_value' => isset($request['goal_home']) ? $request['goal_home'] : null,
+                'away_team_goal_value' => isset($request['goal_away']) ? $request['goal_away'] : null,
+            ];
+            $match->update($updateAttributes);
+            if (strtoupper($match->stages) === StageHelper::GROUP_STAGE) {
+                $this->updateStandings($match);
             }
-            $usersNoBet = $usersNoBetQuery->get();
-            $params = [];
-            foreach ($usersNoBet as $user) {
-                $arrayTmp['user_id'] = $user->id;
-                $arrayTmp['match_id'] = $match->id;
-                $rate = StageHelper::getRate(strtoupper($match->stages));
-                $unitPrice = CostRateHelper::UNIT_PRICE;
-                $arrayTmp['cost'] = $unitPrice*$rate;
-                $arrayTmp['status'] = ResultStatusHelper::LOSE;
-                $params[] = $arrayTmp;
-            }
-            DB::table('results')->insert($params);
+            DB::commit();
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            DB::rollBack();
+            throw new Exception($e->getMessage());
         }
-        $match->update($updateAttributes);
-        if (strtoupper($match->stages) === StageHelper::GROUP_STAGE) {
-            $this->updateStandings($match);
-        }
-
         return response()->json(['success' => 1]);
+    }
+
+    protected function updateUsersNoBet($usersNoBet, $match)
+    {
+        $params = [];
+        foreach ($usersNoBet as $user) {
+            $arrayTmp['user_id'] = $user->id;
+            $arrayTmp['match_id'] = $match->id;
+            $rate = StageHelper::getRate(strtoupper($match->stages));
+            $unitPrice = CostRateHelper::UNIT_PRICE;
+            $arrayTmp['cost'] = $unitPrice*$rate;
+            $arrayTmp['status'] = ResultStatusHelper::LOSE;
+            $params[] = $arrayTmp;
+        }
+        DB::table('results')->insert($params);
+    }
+
+    protected function updateSummary($usersNoBet, $match)
+    {
+        foreach ($usersNoBet as $user) {
+            $summary = SummaryPlayers::where('user_id',$user->id)->first();
+            $rate = StageHelper::getRate(strtoupper($match->stages));
+            $unitPrice = CostRateHelper::UNIT_PRICE;
+            $debit = $rate*$unitPrice;
+            if (!$summary) {
+                $attributes['user_id'] = $user->id;
+                $attributes['lose'] = 1;
+                $attributes['debit'] = $debit;
+                SummaryPlayers::insert($attributes);
+            } else {
+                $attributes['lose'] = $summary->lose + 1;
+                $attributes['debit'] = $summary->debit + $debit;
+                $summary->update($summary);
+            }
+        }
     }
 
     protected function updateStandings($match)

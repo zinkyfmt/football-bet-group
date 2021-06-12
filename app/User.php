@@ -26,4 +26,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    /**
+     * Get the phone associated with the user.
+     */
+    public function results()
+    {
+        return $this->hasMany(Result::class, 'user_id', 'id');
+    }
+
+    /**
+     * Get the phone associated with the user.
+     */
+    public function summary()
+    {
+        return $this->hasOne(SummaryPlayers::class, 'user_id', 'id');
+    }
 }

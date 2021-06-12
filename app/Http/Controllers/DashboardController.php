@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Betting;
 use App\Match;
 use App\Result;
+use App\SummaryPlayers;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -34,15 +35,10 @@ class DashboardController extends Controller
         }
 
         $matchesHistory = Match::select('*')->join('results','matches.id','results.match_id')->join('bettings','results.betting_id','bettings.id')->where('results.user_id', Auth::user()->id)->orderBy('matches.updated_at','desc')->get();
-        //$bettings = Betting::select(DB::raw('*, bettings.id as id'))->join('matches','bettings.match_id','matches.id')->where('bettings.user_id',Auth::user()->id)->whereNotNull('matches.home_team_goal_value')->orderBy('bettings.created_at', 'desc')->get();
-
         $betting = Betting::where('match_id',$match->id)->where('user_id',Auth::user()->id)->orderBy('created_at', 'desc')->first();
         $match->betting =  $betting;
         $match->expire_bet = !$isNextMatch;
-        $players = Result::groupBy('user_id')->selectRaw('users.name, users.email,users.avatar, users.created_at, results.user_id, sum(results.cost) as sum')->join('users','results.user_id','users.id')->orderBy('sum','desc')->get();
-        //$playersStatus = Result::groupBy('user_id')->selectRaw(DB::raw('count(status) as total'))->join('users','results.user_id','users.id')->orderBy('sum','desc')->get();
-        //$players = User::where('role', '>', 1)->get();
-
+        $players = SummaryPlayers::select(DB::raw('*, (win + draw) as win_draw, (win + draw + lose) as total'))->orderBy('debit','desc')->get();
         return  View::make('dashboard.homepage',  ['match' => $match, 'isNextMatch' => $isNextMatch,  'matchesHistory' => $matchesHistory,'players' => $players]);
     }
 }

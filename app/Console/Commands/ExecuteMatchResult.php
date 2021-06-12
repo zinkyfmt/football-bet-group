@@ -6,7 +6,10 @@ use App\Betting;
 use App\Helpers\CostRateHelper;
 use App\Helpers\ResultStatusHelper;
 use App\Helpers\StageHelper;
+use App\Match;
 use App\Result;
+use App\SummaryPlayers;
+use App\User;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +23,6 @@ class ExecuteMatchResult extends Command
      * @var string
      */
     protected $signature = 'match-result:execute';
-
-    const COST_RATE = 1;
-    const COST_UNIT = 10000;
     /**
      * The console command description.
      *
@@ -46,29 +46,60 @@ class ExecuteMatchResult extends Command
      */
     public function handle()
     {
-        $bettings = Betting::select(DB::raw('*, bettings.id as id'))->doesnthave('result')->join('matches','bettings.match_id','matches.id')->whereNotNull('home_team_goal_value')->orderBy('bettings.created_at','asc')->get();
+        $matches = Match::select('*')->doesnthave('result')->whereNotNull('home_team_goal_value')->orderBy('order','asc')->get();
+        echo count($matches) . ' need to be updated!';
+        $users = User::with('summary')->where('role','>',1)->get();
         $result = [];
-        echo count($bettings) . ' need to update!';
-        Log::info(count($bettings) . ' need to update!');
-        foreach ($bettings as $betting) {
-            Log::info('Execute BetID: '.$betting->id);
-            $match = $betting->match;
-            $totalHomeGoal = floatval($match->home_team_rate_value) + floatval($match->home_team_goal_value);
-            $totalAwayGoal = floatval($match->away_team_rate_value) + floatval($match->away_team_goal_value);
-            $status = $this->getStatusByBetting($betting, $totalHomeGoal, $totalAwayGoal);
-            $tempResult['status'] = $status;
+        $summary = [];
+        $userSummary = [];
+        foreach ($matches as $match) {
+            $arrayTemp['match_id'] = $match->id;
             $rate = StageHelper::getRate(strtoupper($match->stages));
             $unitPrice = CostRateHelper::UNIT_PRICE;
-            $tempResult['cost'] = $status === ResultStatusHelper::LOSE ? $unitPrice*$rate : 0;
-            $tempResult['match_id'] = $match->id;
-            $tempResult['betting_id'] = $betting->id;
-            $tempResult['user_id'] = $betting->user_id;
-            $result[] = $tempResult;
+            foreach ($users as $user) {
+                if (!isset($userSummary[$user->id])) {
+                    $userSummary[$user->id]['win'] = $user->summary->win;
+                    $userSummary[$user->id]['lose'] = $user->summary->lose;
+                    $userSummary[$user->id]['draw'] = $user->summary->draw;
+                    $userSummary[$user->id]['debit'] = $user->summary->debit;
+                }
+                $cost = $rate*$unitPrice;
+                $arrayTemp['user_id'] = $user->id;
+                $betting = Betting::where('user_id', '=',$user->id)->where('match_id','=',$match->id)->first();
+                if (!$betting)  {
+                    $arrayTemp['status'] = ResultStatusHelper::LOSE;
+                    $userSummary[$user->id]['lose'] = $userSummary[$user->id]['lose'] + 1;
+                } else {
+                    $arrayTemp['betting_id'] = $betting->id;
+                    $status = $this->getStatusByBetting($match, $betting);
+                    $arrayTemp['status'] = $status;
+                    if ($status === ResultStatusHelper::LOSE) {
+                        $userSummary[$user->id]['lose'] = $userSummary[$user->id]['lose'] + 1;
+                    } elseif ($status === ResultStatusHelper::WIN) {
+                        $userSummary[$user->id]['win'] = $userSummary[$user->id]['win'] + 1;
+                        $cost = 0;
+                    }  else {
+                        $userSummary[$user->id]['draw'] = $userSummary[$user->id]['draw'] + 1;
+                        $cost = 0;
+                    }
+
+                }
+                $userSummary[$user->id]['debit'] = $userSummary[$user->id]['debit'] + $cost;
+                $arrayTemp['cost'] = $cost;
+                $result[] = $arrayTemp;
+            }
         }
+
         if (!empty($result)) {
             DB::beginTransaction();
             try {
                 Result::insert($result);
+                foreach ($userSummary as $user_id => $summary) {
+                    $summaryModel = SummaryPlayers::where('user_id','=',$user_id)->first();
+                    if ($summaryModel) {
+                        $summaryModel->update($summary);
+                    }
+                }
                 DB::commit();
             } catch (Exception $e) {
                 Log::error($e->getMessage());
@@ -79,11 +110,12 @@ class ExecuteMatchResult extends Command
         Log::info('Execute Match Result done');
     }
 
-    public function getStatusByBetting($betting, $totalHomeGoal, $totalAwayGoal)
+    public function getStatusByBetting($match, $betting)
     {
+        $totalHomeGoal = floatval($match->home_team_rate_value) + floatval($match->home_team_goal_value);
+        $totalAwayGoal = floatval($match->away_team_rate_value) + floatval($match->away_team_goal_value);
         $diff = $totalHomeGoal - $totalAwayGoal;
         $winTeamId = $betting->win_team_id;
-        $match = $betting->match;
         $homeId = $match->home_team_id;
         $awayId = $match->away_team_id;
 

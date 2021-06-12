@@ -184,7 +184,7 @@
                             <th class="text-center">Wins/Draws</th>
                             <th class="text-center">Loses</th>
                             <th>Win Rate %</th>
-                            <th>Total Debt ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
+                            <th>Total Debit ({{\App\Helpers\CostRateHelper::CURRENCY}})</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -192,24 +192,24 @@
                           <tr>
                             <td>{{$i + 1}}</td>
                             <td class="text-center">
-                              <div class="c-avatar"><img class="c-avatar-img" src="@if($player->avatar) {{ url($player->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="{{$player->email}}"><span class="c-avatar-status bg-success"></span></div>
+                              <div class="c-avatar"><img class="c-avatar-img" src="@if($player->user->avatar) {{ url($player->user->avatar) }} @else {{ url('/assets/img/avatars/1.jpg') }} @endif" alt="{{$player->user->email}}"><span class="c-avatar-status bg-success"></span></div>
                             </td>
                             <td>
-                              <div>{{$player->name}}</div>
-                              <div class="small text-muted"><span>New</span> | Registered: {{$player->created_at}}</div>
+                              <div>{{$player->user->name}}</div>
+                              <div class="small text-muted"><span>New</span> | Registered: {{$player->user->created_at}}</div>
                             </td>
-                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" id="us" title="us"></i>0</td>
-                            <td>0</td>
+                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" title="us"></i>{{$player->win_draw}}</td>
+                            <td class="text-center"><i class="flag-icon flag-icon-us c-icon-xl" title="us"></i>{{$player->lose}}</td>
                             <td>
                               <div class="clearfix">
-                                <div class="float-left"><strong>0%</strong></div>
+                                <div class="float-left"><strong>{{number_format($player->win_draw/$player->total*100,2)}}%</strong></div>
                               </div>
                               <div class="progress progress-xs">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{number_format($player->win_draw/$player->total*100,2)}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                               </div>
                             </td>
                             <td>
-                              <div class="small text-muted">{{number_format($player->sum, 0, '.', ',')}}</div>
+                              <div class="text-muted"><strong>{{number_format($player->debit, 0, '.', ',')}}</strong></div>
                             </td>
                           </tr>
                           @endforeach
