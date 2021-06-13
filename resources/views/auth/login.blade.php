@@ -44,7 +44,17 @@
                     <div class="card-body">
                         <h1>Login</h1>
                         {{ Form::open(array('url' => 'login')) }}
-                        <p>
+                        @if (session('errorMessage'))
+                            <div class="alert alert-warning">
+                                {{ session('errorMessage') }}
+                            </div>
+                        @endif
+                        @if (session('errorSuccess'))
+                            <div class="alert alert-success">
+                                {{ session('errorSuccess') }}
+                            </div>
+                        @endif
+                        <p style="color: red">
                             {{ $errors->first('email') }}
                             {{ $errors->first('password') }}
                         </p>
@@ -68,7 +78,7 @@
                                 {{ Form::submit('Login!', array('class' => 'btn btn-primary px-4')) }}
                             </div>
                             <div class="col-6 text-right">
-                                <button class="btn btn-link px-0" type="button">Forgot password?</button>
+                                <a class="btn btn-link px-0" href="/forgot-password" >Forgot password?</a>
                             </div>
                         </div>
                         {{ Form::close() }}

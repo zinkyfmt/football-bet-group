@@ -57,7 +57,6 @@ class LoginController extends Controller
         );
 
         $validator = Validator::make(Input::all(), $rules);
-
         if ($validator->fails()) {
             return Redirect::to('login')
                 ->withErrors($validator) // send back all errors to the login form
@@ -74,8 +73,7 @@ class LoginController extends Controller
             if (Auth::attempt($userdata)) {
                 return Redirect::to('/');
             } else {
-                // validation not successful, send back to form
-                return Redirect::to('login');
+                return redirect('/login')->with('errorMessage', 'Email or password is incorrect!');
             }
 
         }

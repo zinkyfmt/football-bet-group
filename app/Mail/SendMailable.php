@@ -21,20 +21,16 @@ class SendMailable extends Mailable
 
     public function build()
     {
-        $setting = Setting::find(1);
-        $ownName = $setting->owner_name;
-        $address = $setting->admin_email;
-        $subject = $setting->email_subject;
-        $name = $this->data['name'];
-        $newSubject = str_replace('{{$NAME}}', $name, $subject);
-        $body = $setting->email_template;
-        $newBody = str_replace('{{$NAME}}', $name, $body);
+        $address = 'minhtinhph2302@gmail.com';
+        $subject = 'This is a demo!';
+        $name = 'Jane Doe';
+
         return $this->view('email.name')
-            ->from($address, $ownName)
-            // ->cc($address, $name)
-            // ->bcc($address, $name)
-            // ->replyTo($address, $name)
-            ->subject($newSubject)
-            ->with([ 'content' => $newBody]);
+            ->from($address, $name)
+            ->cc($address, $name)
+            ->bcc($address, $name)
+            ->replyTo($address, $name)
+            ->subject($subject)
+            ->with([ 'content' => $this->data['message'] ]);
     }
 }

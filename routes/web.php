@@ -1,5 +1,6 @@
 <?php
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +19,13 @@ Route::get('/', function () {
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login')->name('login.attempt')->uses('Auth\LoginController@doLogin');
 Route::post('register')->name('register')->uses('Auth\RegisterController@register');
+Route::get('forgot-password', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('forgot-password');
+Route::post('forgot-password', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('send-reset-link');
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->middleware('guest')->name('password.reset');
+
+Route::post('/reset-password', 'Auth\ResetPasswordController@updatePassword');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('/', 'DashboardController');

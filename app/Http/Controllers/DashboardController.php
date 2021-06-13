@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 
 use App\Betting;
+use App\Mail\SendMailable;
 use App\Match;
 use App\Result;
 use App\SummaryPlayers;
@@ -10,13 +11,14 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
-
 
 class DashboardController extends Controller
 {
     public function index()
     {
+
         $matches = Match::select('*')->orderBy('match_at')->get();
         $isNextMatch = false;
         if (count($matches) === 0)  {
