@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('match-result:execute')->everyThirtyMinutes();
+        $schedule->command('match-result:execute')->everyFifteenMinutes();
     }
 
     /**
